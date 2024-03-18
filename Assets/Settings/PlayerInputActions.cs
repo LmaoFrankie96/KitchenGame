@@ -35,6 +35,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""5606cac8-3268-4f60-b331-50d233efb299"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,72 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrow Keys"",
+                    ""id"": ""f92eba98-e6f3-4d23-8ce7-b06121cabd89"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""cb72c4b2-7f3e-44f3-ada9-ab36a86bd1d8"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""4625dc40-ae2b-473c-8ef2-328d956de4a1"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""dca1947f-bf8a-4b21-ba69-f1d7c380e515"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ebaa5cde-635f-4999-802d-a5875d75bc58"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""33f3861c-6c64-49e4-b778-f0dfd6a27e5b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +176,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +239,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Interact;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +258,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -187,6 +268,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -207,5 +291,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

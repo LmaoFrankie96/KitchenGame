@@ -17,6 +17,36 @@ public class Player : MonoBehaviour
         playerHeight = 2f;
         lastInteractDir = Vector3.zero;
     }
+    private void Start()
+    {
+        InputManager.Instance.OnInteractAction += Input_OnInteractAction;
+    }
+
+    private void Input_OnInteractAction(object sender, System.EventArgs e)
+    {
+
+        Vector2 inputVector = InputManager.Instance.GetMovementVector();
+        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        if (moveDir != Vector3.zero)
+        {
+            lastInteractDir = moveDir;
+        }
+
+        float interactDistance = 2f;
+        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
+        {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+
+                //Has clear counter in raycastHit
+               clearCounter.Interact();
+            }
+            //Debug.Log(raycastHit.transform);
+        }
+
+    }
+
     private void Update()
     {
         PlayerMovement();
@@ -38,7 +68,7 @@ public class Player : MonoBehaviour
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
 
                 //Has clear counter in raycastHit
-                clearCounter.Interact();
+                //clearCounter.Interact();
             }
             //Debug.Log(raycastHit.transform);
         }
