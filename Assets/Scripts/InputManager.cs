@@ -23,6 +23,7 @@ public class InputManager : MonoBehaviour
             }
             return instance;
         }
+        private set { instance = value; }
 
     }
     private void Awake()
