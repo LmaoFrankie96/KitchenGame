@@ -5,9 +5,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float rotateSpeed = 10f;
-    private Vector2 inputVector;
     private bool isWalking, canMove;
     private float playerRadius, playerHeight, moveDistance;
+    private Vector3 lastInteractDir;
 
     private void Awake()
     {
@@ -15,19 +15,40 @@ public class Player : MonoBehaviour
         canMove = false;
         playerRadius = .7f;
         playerHeight = 2f;
+        lastInteractDir = Vector3.zero;
     }
     private void Update()
     {
         PlayerMovement();
+        PlayerInteractions();
+    }
+    private void PlayerInteractions()
+    {
+        Vector2 inputVector = InputManager.Instance.GetMovementVector();
+        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+
+        if (moveDir != Vector3.zero)
+        {
+            lastInteractDir = moveDir;
+        }
+
+        float interactDistance = 2f;
+        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance))
+        {
+
+            Debug.Log(raycastHit.transform);
+        }
+
     }
     private void PlayerMovement()
     {
-        inputVector = InputManager.Instance.GetMovementVector();
+        Vector2 inputVector = InputManager.Instance.GetMovementVector();
         Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
 
         moveDistance = moveSpeed * Time.deltaTime;
         canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, moveDistance);
-        if (!canMove) {
+        if (!canMove)
+        {
             //Cannot move towards moveDir
 
             //Attempt only X movement
@@ -38,9 +59,10 @@ public class Player : MonoBehaviour
             {
                 //Can only move on the X
                 moveDir = moveDirX;
-                
+
             }
-            else {
+            else
+            {
 
                 // Cannot only move on the x
                 //Attempt only Z movement
@@ -49,12 +71,13 @@ public class Player : MonoBehaviour
                 if (canMove)
                 {
                     moveDir = moveDirZ;
-                    
+
                 }
-                else {
+                else
+                {
 
                     //Cannot move in any direction
-                    
+
                 }
             }
         }
