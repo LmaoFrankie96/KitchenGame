@@ -926,6 +926,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 7
   rotateSpeed: 10
+  countersLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1001 &2304543227088705705
 PrefabInstance:
   m_ObjectHideFlags: 0

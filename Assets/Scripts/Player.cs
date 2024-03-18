@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private bool isWalking, canMove;
     private float playerRadius, playerHeight, moveDistance;
     private Vector3 lastInteractDir;
-
+    [SerializeField] private LayerMask countersLayerMask;
     private void Awake()
     {
         isWalking = false;
@@ -33,10 +33,14 @@ public class Player : MonoBehaviour
         }
 
         float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance))
+        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
         {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
 
-            Debug.Log(raycastHit.transform);
+                //Has clear counter in raycastHit
+                clearCounter.Interact();
+            }
+            //Debug.Log(raycastHit.transform);
         }
 
     }
