@@ -10,9 +10,10 @@ public class EventSubscriber : MonoBehaviour
         publisher.OnSpacePressed += Test_OnSpacePressed;
     }
 
-    private void Test_OnSpacePressed(object sender, System.EventArgs e)
+    private void Test_OnSpacePressed(object sender, EventPublisher.OnSpacePressedEventArgs e)
     {
-        Debug.Log("Space bar pressed");
+        Debug.Log("Space bar pressed" + e.spaceCount);
+        //publisher.OnSpacePressed -= Test_OnSpacePressed;
     }
 
 }
