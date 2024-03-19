@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     private float playerRadius, playerHeight, moveDistance;
     private Vector3 lastInteractDir;
     [SerializeField] private LayerMask countersLayerMask;
+    private ClearCounter selectedCounter;
     private void Awake()
     {
         isWalking = false;
@@ -24,24 +25,9 @@ public class Player : MonoBehaviour
     private void Input_OnInteractAction(object sender, System.EventArgs e)
     {
 
-        Vector2 inputVector = InputManager.Instance.GetMovementVector();
-        Vector3 moveDir = new Vector3(inputVector.x, 0, inputVector.y);
+        if (selectedCounter != null) {
 
-        if (moveDir != Vector3.zero)
-        {
-            lastInteractDir = moveDir;
-        }
-
-        float interactDistance = 2f;
-        if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
-        {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-
-                //Has clear counter in raycastHit
-               clearCounter.Interact();
-            }
-            //Debug.Log(raycastHit.transform);
+            selectedCounter.Interact();
         }
 
     }
@@ -64,13 +50,29 @@ public class Player : MonoBehaviour
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
         {
-            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter)) {
+            if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
 
                 //Has clear counter in raycastHit
-                //clearCounter.Interact();
+                if (clearCounter != selectedCounter)
+                {
+
+                    selectedCounter = clearCounter;
+                }
+
+            }
+            else
+            {
+
+                selectedCounter = null;
             }
             //Debug.Log(raycastHit.transform);
         }
+        else {
+
+            selectedCounter = null;
+        }
+        Debug.Log(selectedCounter);
 
     }
     private void PlayerMovement()
