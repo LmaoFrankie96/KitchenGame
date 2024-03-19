@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,8 +10,32 @@ public class Player : MonoBehaviour
     private Vector3 lastInteractDir;
     [SerializeField] private LayerMask countersLayerMask;
     private ClearCounter selectedCounter;
+
+    
+    public static Player Instance
+    {
+        get; private set;
+    }
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+
+    public class OnSelectedCounterChangedEventArgs : EventArgs
+    {
+
+        public ClearCounter counterSelected;
+    }
     private void Awake()
     {
+        if (Instance == null)
+        {
+
+            Instance = this;
+        }
+        else
+        {
+
+            Debug.Log("Error. More than one references of the Player");
+        }
         isWalking = false;
         canMove = false;
         playerRadius = .7f;
@@ -25,7 +50,8 @@ public class Player : MonoBehaviour
     private void Input_OnInteractAction(object sender, System.EventArgs e)
     {
 
-        if (selectedCounter != null) {
+        if (selectedCounter != null)
+        {
 
             selectedCounter.Interact();
         }
@@ -58,21 +84,31 @@ public class Player : MonoBehaviour
                 {
 
                     selectedCounter = clearCounter;
+                    SetSelectedCounter(selectedCounter);
+
                 }
 
             }
             else
             {
 
-                selectedCounter = null;
+                SetSelectedCounter(null);
             }
             //Debug.Log(raycastHit.transform);
         }
-        else {
+        else
+        {
 
-            selectedCounter = null;
+            SetSelectedCounter(null);
         }
-        Debug.Log(selectedCounter);
+        
+
+    }
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+
+        this.selectedCounter = selectedCounter;
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs { counterSelected = selectedCounter });
 
     }
     private void PlayerMovement()
