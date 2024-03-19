@@ -9,6 +9,7 @@ public class EventSubscriber : MonoBehaviour
         publisher = GetComponent<EventPublisher>();
         publisher.OnSpacePressed += Test_OnSpacePressed;
         publisher.ActionSpacePressed += Test_ActionSpacePressed;
+        publisher.TestEvent += Test_OnTestEvent;
     }
 
     private void Test_ActionSpacePressed(EventPublisher.OnSpacePressedEventArgs obj)
@@ -26,5 +27,8 @@ public class EventSubscriber : MonoBehaviour
 
         Debug.Log("Space bar pressed through Unity event"+e.spaceCount);
     }
+    public void Test_OnTestEvent(float f) {
 
+        Debug.Log("Space bar pressed through custom delegate event" + f);
+    }
 }

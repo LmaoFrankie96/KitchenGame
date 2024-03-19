@@ -8,6 +8,8 @@ public class EventPublisher : MonoBehaviour
     private int count;
     public event Action<OnSpacePressedEventArgs> ActionSpacePressed;
     public UnityEvent<OnSpacePressedEventArgs> OnSpacePressedUnity;
+    public delegate void TestEventDelegate(float f);
+    public TestEventDelegate TestEvent;
     private void Awake()
     {
         count = 0;
@@ -25,6 +27,7 @@ public class EventPublisher : MonoBehaviour
             OnSpacePressed?.Invoke(this, new OnSpacePressedEventArgs { spaceCount = count });
             ActionSpacePressed?.Invoke(new OnSpacePressedEventArgs { spaceCount = count });
             OnSpacePressedUnity?.Invoke(new OnSpacePressedEventArgs { spaceCount = count });
+            TestEvent?.Invoke(5.5f);
         }
     }
 }
