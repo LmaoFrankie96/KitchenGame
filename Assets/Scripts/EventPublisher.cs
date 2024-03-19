@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EventPublisher : MonoBehaviour
 {
     public event EventHandler<OnSpacePressedEventArgs> OnSpacePressed;
     private int count;
-
+    public event Action<OnSpacePressedEventArgs> ActionSpacePressed;
+    public UnityEvent<OnSpacePressedEventArgs> OnSpacePressedUnity;
     private void Awake()
     {
         count = 0;
@@ -21,6 +23,8 @@ public class EventPublisher : MonoBehaviour
         {
             count++;
             OnSpacePressed?.Invoke(this, new OnSpacePressedEventArgs { spaceCount = count });
+            ActionSpacePressed?.Invoke(new OnSpacePressedEventArgs { spaceCount = count });
+            OnSpacePressedUnity?.Invoke(new OnSpacePressedEventArgs { spaceCount = count });
         }
     }
 }
