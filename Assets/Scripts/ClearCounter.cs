@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class ClearCounter : MonoBehaviour
 {
-    [SerializeField] private KitchenObjectsSO kitchenObject;
+    [SerializeField] private KitchenObjectsSO kitchenObjectSO;
     [SerializeField] private Transform counterTopPoint;
-    public void Interact() {
+    private KitchenObject kitchenObject;
+    public void Interact()
+    {
 
-        Debug.Log("Interact!");
-        Transform kitchenObjectTransform=Instantiate(kitchenObject.prefab, counterTopPoint);
-        kitchenObjectTransform.localPosition = Vector3.zero;
+        if (kitchenObject == null)
+        {
+            Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterTopPoint);
+            kitchenObjectTransform.localPosition = Vector3.zero;
 
-        Debug.Log(kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectsSO());
+            Debug.Log(kitchenObjectTransform.GetComponent<KitchenObject>().GetKitchenObjectsSO());
+            kitchenObject = kitchenObjectTransform.GetComponent<KitchenObject>();
+        }
     }
 }
