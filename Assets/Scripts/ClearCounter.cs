@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ClearCounter : MonoBehaviour
@@ -41,13 +40,10 @@ public class ClearCounter : MonoBehaviour
 
     public Transform GetKitchenObjectFollowTransform()
     {
-
-
         return counterTopPoint;
     }
     public void SetKitchenObject(KitchenObject kitchenObject)
     {
-
         this.kitchenObject = kitchenObject;
     }
     public KitchenObject GetKitchenObject()
