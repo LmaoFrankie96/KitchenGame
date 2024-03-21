@@ -17,25 +17,25 @@ public class ClearCounter : MonoBehaviour, IKitchenObjectParent
             if (kitchenObject != null)
             {
 
-                kitchenObject.SetClearCounter(secondClearCounter);
+                kitchenObject.SetKitchenObjectParent(secondClearCounter);
                 
             }
 
         }
     }
-    public void Interact()
+    public void Interact(Player player)
     {
 
         if (kitchenObject == null)
         {
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab, counterTopPoint);
-            kitchenObjectTransform.GetComponent<KitchenObject>().SetClearCounter(this);
+            kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(this);
 
         }
         else
         {
             //Add logic for attaching kitchen object to player here
-            Debug.Log(kitchenObject.GetClearCounter());
+            kitchenObject.SetKitchenObjectParent(player);
         }
     }
 
