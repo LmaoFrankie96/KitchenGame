@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ClearCounter : MonoBehaviour
+public class ClearCounter : MonoBehaviour, IKitchenObjectParent
 {
     [SerializeField] private KitchenObjectsSO kitchenObjectSO;
     [SerializeField] private Transform counterTopPoint;
@@ -34,6 +34,7 @@ public class ClearCounter : MonoBehaviour
         }
         else
         {
+            //Add logic for attaching kitchen object to player here
             Debug.Log(kitchenObject.GetClearCounter());
         }
     }
