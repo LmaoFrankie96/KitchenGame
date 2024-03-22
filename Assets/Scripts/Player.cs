@@ -46,6 +46,12 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     private void Start()
     {
         InputManager.Instance.OnInteractAction += Input_OnInteractAction;
+        InputManager.Instance.OnInteractAlternateAction += Input_OnInteractAlternateAction;
+    }
+
+    private void Input_OnInteractAlternateAction(object sender, EventArgs e)
+    {
+        //throw new NotImplementedException();
     }
 
     private void Input_OnInteractAction(object sender, System.EventArgs e)

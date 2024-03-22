@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     private static InputManager instance;
     private PlayerInputActions inputActions;
     public event EventHandler OnInteractAction;
+    public event EventHandler OnInteractAlternateAction;
     public static InputManager Instance
     {
         get
@@ -39,6 +40,12 @@ public class InputManager : MonoBehaviour
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
         inputActions.Player.Interact.performed += Interact_performed;
+        inputActions.Player.InteractAlt.performed += InteractAlt_performed;
+    }
+
+    private void InteractAlt_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnInteractAlternateAction?.Invoke(this, EventArgs.Empty);
     }
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
