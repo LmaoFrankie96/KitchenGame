@@ -8,9 +8,16 @@ public class ContainerCounter : BaseCounter, IKitchenObjectParent
     [SerializeField] private KitchenObjectsSO kitchenObjectSO;
     public override void Interact(Player player)
     {
+        if (!player.HasKitchenObject())
+        {
             Transform kitchenObjectTransform = Instantiate(kitchenObjectSO.prefab);
             kitchenObjectTransform.GetComponent<KitchenObject>().SetKitchenObjectParent(player);
             OnPlayerGrabObject?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+
+            Debug.LogError("Cannot pick more than one item");
+        }
     }
   
 }
